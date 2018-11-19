@@ -1,0 +1,87 @@
+PROMETHEUS-TRAPPER-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, TimeTicks, experimental, NOTIFICATION-TYPE
+        FROM SNMPv2-SMI
+    DisplayString, TimeStamp
+        FROM SNMPv2-TC
+;
+
+prometheusTrapper MODULE-IDENTITY
+    LAST-UPDATED "201811160000Z"
+    ORGANIZATION "DaoCloud"
+    CONTACT-INFO "https://github.com/yeya24/snmp_webhook"
+    DESCRIPTION  "Example MIB objects for agent module example implementations"
+    REVISION     "201811160000Z"
+    DESCRIPTION  "Created MIB"
+    ::= { experimental 1977 }
+
+--
+-- Top level structure
+--
+prometheusTrapperNotifications        OBJECT IDENTIFIER ::= { prometheusTrapper 1 }
+prometheusTrapperNotificationsPrefix  OBJECT IDENTIFIER ::= { prometheusTrapperNotifications 0 }
+prometheusTrapperNotificationObjects  OBJECT IDENTIFIER ::= { prometheusTrapperNotifications 1 }
+
+--
+--  Notifications
+--
+
+prometheusTrapperNotificationInstance OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION
+        "Unique identifier for the instance (hostname / instance-id / ip-address etc)."
+::= { prometheusTrapperNotificationObjects 1 }
+
+prometheusTrapperNotificationSeverity OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION
+        "The severity of the notification."
+::= { prometheusTrapperNotificationObjects 2 }
+
+prometheusTrapperNotificationDescription OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION
+        "Description field."
+::= { prometheusTrapperNotificationObjects 3 }
+
+
+prometheusTrapperNotificationTimestamp OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION
+        "The time the notification-event occurred."
+::= { prometheusTrapperNotificationObjects 4 }
+
+prometheusTrapperFiringNotification NOTIFICATION-TYPE
+    OBJECTS     {
+                    prometheusTrapperNotificationInstance,
+                    prometheusTrapperNotificationSeverity,
+                    prometheusTrapperNotificationDescription,
+                    prometheusTrapperNotificationTimestamp
+                }
+    STATUS      current
+    DESCRIPTION
+        "A notification describing the OCCURRENCE of a Prometheus Alert event."
+::= { prometheusTrapperNotificationsPrefix 1 }
+
+prometheusTrapperRecoveryNotification NOTIFICATION-TYPE
+    OBJECTS     {
+                    prometheusTrapperNotificationInstance,
+                    prometheusTrapperNotificationSeverity,
+                    prometheusTrapperNotificationDescription,
+                    prometheusTrapperNotificationTimestamp
+                }
+    STATUS      current
+    DESCRIPTION
+        "A notification describing the RECOVERY of a Prometheus Alert event."
+::= { prometheusTrapperNotificationsPrefix 2 }
+
+END
