@@ -7,6 +7,7 @@ import (
 type TrapOIDs struct {
 	FiringTrap   *snmpgo.Oid
 	RecoveryTrap *snmpgo.Oid
+	Alert        *snmpgo.Oid
 	Instance     *snmpgo.Oid
 	Severity     *snmpgo.Oid
 	Description  *snmpgo.Oid

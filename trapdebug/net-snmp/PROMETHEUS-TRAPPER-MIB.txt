@@ -10,7 +10,7 @@ IMPORTS
 prometheusTrapper MODULE-IDENTITY
     LAST-UPDATED "201811160000Z"
     ORGANIZATION "DaoCloud"
-    CONTACT-INFO "https://github.com/yeya24/snmp_webhook"
+    CONTACT-INFO "https://github.com/DaoCloud/prometheus_webhook_snmptrapper"
     DESCRIPTION  "Example MIB objects for agent module example implementations"
     REVISION     "201811160000Z"
     DESCRIPTION  "Created MIB"
@@ -27,13 +27,21 @@ prometheusTrapperNotificationObjects  OBJECT IDENTIFIER ::= { prometheusTrapperN
 --  Notifications
 --
 
+prometheusTrapperNotificationAlert OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION
+        "The name of the alert."
+::= { prometheusTrapperNotificationObjects 1 }
+
 prometheusTrapperNotificationInstance OBJECT-TYPE
     SYNTAX      DisplayString
     MAX-ACCESS  accessible-for-notify
     STATUS      current
     DESCRIPTION
         "Unique identifier for the instance (hostname / instance-id / ip-address etc)."
-::= { prometheusTrapperNotificationObjects 1 }
+::= { prometheusTrapperNotificationObjects 2 }
 
 prometheusTrapperNotificationSeverity OBJECT-TYPE
     SYNTAX      DisplayString
@@ -41,7 +49,7 @@ prometheusTrapperNotificationSeverity OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The severity of the notification."
-::= { prometheusTrapperNotificationObjects 2 }
+::= { prometheusTrapperNotificationObjects 3 }
 
 prometheusTrapperNotificationDescription OBJECT-TYPE
     SYNTAX      DisplayString
@@ -49,7 +57,7 @@ prometheusTrapperNotificationDescription OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "Description field."
-::= { prometheusTrapperNotificationObjects 3 }
+::= { prometheusTrapperNotificationObjects 4 }
 
 
 prometheusTrapperNotificationTimestamp OBJECT-TYPE
@@ -58,10 +66,11 @@ prometheusTrapperNotificationTimestamp OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The time the notification-event occurred."
-::= { prometheusTrapperNotificationObjects 4 }
+::= { prometheusTrapperNotificationObjects 5 }
 
 prometheusTrapperFiringNotification NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusTrapperNotificationAlert,
                     prometheusTrapperNotificationInstance,
                     prometheusTrapperNotificationSeverity,
                     prometheusTrapperNotificationDescription,
@@ -74,6 +83,7 @@ prometheusTrapperFiringNotification NOTIFICATION-TYPE
 
 prometheusTrapperRecoveryNotification NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusTrapperNotificationAlert,
                     prometheusTrapperNotificationInstance,
                     prometheusTrapperNotificationSeverity,
                     prometheusTrapperNotificationDescription,

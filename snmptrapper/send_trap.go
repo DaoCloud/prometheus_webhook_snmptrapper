@@ -38,6 +38,7 @@ func sendTrap(alert types.Alert) {
 	}
 
 	// Insert the AlertManager variables:
+	varBinds = append(varBinds, snmpgo.NewVarBind(trapOIDs.Alert, snmpgo.NewOctetString([]byte(alert.Labels["alertname"]))))
 	varBinds = append(varBinds, snmpgo.NewVarBind(trapOIDs.Instance, snmpgo.NewOctetString([]byte(alert.Labels["instance"]))))
 	varBinds = append(varBinds, snmpgo.NewVarBind(trapOIDs.Severity, snmpgo.NewOctetString([]byte(alert.Labels["severity"]))))
 	varBinds = append(varBinds, snmpgo.NewVarBind(trapOIDs.Description, snmpgo.NewOctetString([]byte(alert.Annotations["description"]))))

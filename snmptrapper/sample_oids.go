@@ -20,8 +20,9 @@ const (
 	oidRMONFallingAlarm                         = "1.3.6.1.2.1.16.0.2"      // Notification: recovery
 	oidPrometheusTrapperFiringNotification      = "1.3.6.1.3.1977.1.0.1"    // Notification: firing
 	oidPrometheusTrapperRecoveryNotification    = "1.3.6.1.3.1977.1.0.2"    // Notification: recovery
-	oidPrometheusTrapperNotificationInstance    = "1.3.6.1.3.1977.1.1.1"    // Variable: instance
-	oidPrometheusTrapperNotificationSeverity    = "1.3.6.1.3.1977.1.1.2"    // Variable: severity
-	oidPrometheusTrapperNotificationDescription = "1.3.6.1.3.1977.1.1.3"    // Variable: description
-	oidPrometheusTrapperNotificationTimestamp   = "1.3.6.1.3.1977.1.1.4"    // Variable: timestamp
+	oidPrometheusTrapperRecoveryAlert           = "1.3.6.1.3.1977.1.1.1"    // Variable: alert
+	oidPrometheusTrapperNotificationInstance    = "1.3.6.1.3.1977.1.1.2"    // Variable: instance
+	oidPrometheusTrapperNotificationSeverity    = "1.3.6.1.3.1977.1.1.3"    // Variable: severity
+	oidPrometheusTrapperNotificationDescription = "1.3.6.1.3.1977.1.1.4"    // Variable: description
+	oidPrometheusTrapperNotificationTimestamp   = "1.3.6.1.3.1977.1.1.5"    // Variable: timestamp
 )
