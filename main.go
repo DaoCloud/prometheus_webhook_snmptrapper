@@ -1,15 +1,13 @@
 package main
 
 import (
-	flag "flag"
-	sync "sync"
-
-	config "github.com/chrusty/prometheus_webhook_snmptrapper/config"
-	snmptrapper "github.com/chrusty/prometheus_webhook_snmptrapper/snmptrapper"
-	types "github.com/chrusty/prometheus_webhook_snmptrapper/types"
-	webhook "github.com/chrusty/prometheus_webhook_snmptrapper/webhook"
-
-	logrus "github.com/sirupsen/logrus"
+	"flag"
+	"github.com/chrusty/prometheus_webhook_snmptrapper/config"
+	"github.com/chrusty/prometheus_webhook_snmptrapper/snmptrapper"
+	"github.com/chrusty/prometheus_webhook_snmptrapper/types"
+	"github.com/chrusty/prometheus_webhook_snmptrapper/webhook"
+	"sync"
+	"github.com/sirupsen/logrus"
 )
 
 var (
@@ -37,7 +35,7 @@ func main() {
 
 	// Prepare a channel of events (to feed the digester):
 	log.Info("Preparing the alerts channel")
-	alertsChannel := make(chan types.Alert)
+	alertsChannel := make(chan types.AlertGroup)
 
 	// Prepare to have background GoRoutines running:
 	waitGroup.Add(1)

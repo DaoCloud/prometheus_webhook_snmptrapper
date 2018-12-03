@@ -13,7 +13,8 @@ import (
 
 // A webhook handler with a "ServeHTTP" method:
 type WebhookHandler struct {
-	AlertsChannel chan types.Alert
+	//AlertsChannel chan []types.Alert
+	AlertsChannel    chan types.AlertGroup
 }
 
 // Handle webhook requests:
@@ -29,27 +30,28 @@ func (webhookHandler *WebhookHandler) ServeHTTP(responseWriter http.ResponseWrit
 	}
 
 	// Validate the payload:
-	err, alerts := validatePayload(payload)
+	err, status, alerts := validatePayload(payload)
 	if err != nil {
 		http.Error(responseWriter, "Failed to unmarshal the request-body into an alert", http.StatusBadRequest)
 		return
 	}
+	//
+	//// Send the alerts to the snmp-trapper:
+	//for alertIndex, alert := range alerts {
+	//	log.WithFields(logrus.Fields{"index": alertIndex, "status": alert.Status, "labels": alert.Labels}).Debug("Forwarding an alert to the SNMP trapper")
+	//
+	//
+	//	// Put the alert onto the alerts-channel:
+	//	webhookHandler.AlertsChannel <- alert
+	//}
 
-	// Send the alerts to the snmp-trapper:
-	for alertIndex, alert := range alerts {
-		log.WithFields(logrus.Fields{"index": alertIndex, "status": alert.Status, "labels": alert.Labels}).Debug("Forwarding an alert to the SNMP trapper")
-
-		// Enrich the request with the remote-address:
-		alert.Address = request.RemoteAddr
-
-		// Put the alert onto the alerts-channel:
-		webhookHandler.AlertsChannel <- alert
-	}
+	log.WithFields(logrus.Fields{"status": status}).Debug("Forwarding an alert to the SNMP trapper")
+	webhookHandler.AlertsChannel <- types.AlertGroup{Status:status, Alerts:alerts}
 
 }
 
 // Validate a webhook payload and return a list of Alerts:
-func validatePayload(payload []byte) (error, []types.Alert) {
+func validatePayload(payload []byte) (error, string, []types.Alert) {
 
 	// Make our response:
 	alerts := make([]types.Alert, 0)
@@ -61,7 +63,7 @@ func validatePayload(payload []byte) (error, []types.Alert) {
 	err := json.Unmarshal(payload, prometheusData)
 	if err != nil {
 		log.WithFields(logrus.Fields{"error": err, "payload": payload}).Error("Failed to unmarshal the request body into an alert")
-		return err, alerts
+		return err,"" , alerts
 	} else {
 		log.WithFields(logrus.Fields{"payload": string(payload)}).Debug("Received a valid webhook alert")
 	}
@@ -80,5 +82,5 @@ func validatePayload(payload []byte) (error, []types.Alert) {
 
 	}
 
-	return nil, alerts
+	return nil, prometheusData.Status, alerts
 }

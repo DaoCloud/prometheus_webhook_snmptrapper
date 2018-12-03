@@ -25,14 +25,14 @@ func init() {
 	// Configure which OIDs to use for the SNMP Traps:
 	trapOIDs.FiringTrap, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.0.1")
 	trapOIDs.RecoveryTrap, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.0.2")
-	trapOIDs.Alert, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.1")
-	trapOIDs.Instance, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.2")
-	trapOIDs.Severity, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.3")
-	trapOIDs.Description, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.4")
-	trapOIDs.TimeStamp, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.5")
+	//trapOIDs.Alert, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.1")
+	//trapOIDs.Instance, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.2")
+	//trapOIDs.Severity, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.3")
+	trapOIDs.Description, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.1")
+	//trapOIDs.TimeStamp, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.5")
 }
 
-func Run(myConfigFromMain config.Config, alertsChannel chan types.Alert, waitGroup *sync.WaitGroup) {
+func Run(myConfigFromMain config.Config, alertsChannel chan types.AlertGroup, waitGroup *sync.WaitGroup) {
 
 	log.WithFields(logrus.Fields{"address": myConfigFromMain.SNMPTrapAddress}).Info("Starting the SNMP trapper")
 
@@ -48,11 +48,12 @@ func Run(myConfigFromMain config.Config, alertsChannel chan types.Alert, waitGro
 		for {
 			select {
 
-			case alert := <-alertsChannel:
+			case alerts := <-alertsChannel:
 
-				// Send a trap based on this alert:
-				log.WithFields(logrus.Fields{"status": alert.Status}).Debug("Received an alert")
-				sendTrap(alert)
+				//// Send a trap based on this alert:
+				//log.WithFields(logrus.Fields{"status": alert.Status}).Debug("Received an alert")
+				//sendTrap(alert)
+				sendTraps(alerts)
 			}
 		}
 	}()

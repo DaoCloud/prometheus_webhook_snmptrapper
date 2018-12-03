@@ -4,8 +4,12 @@ import (
 	"time"
 )
 
+type AlertGroup struct {
+	Status    string
+	Alerts    []Alert
+}
+
 type Alert struct {
-	Address      string
 	Status       string
 	Annotations  map[string]string
 	Labels       map[string]string
