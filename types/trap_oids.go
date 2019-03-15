@@ -12,4 +12,6 @@ type TrapOIDs struct {
 	Severity     *snmpgo.Oid
 	Description  *snmpgo.Oid
 	TimeStamp    *snmpgo.Oid
+	Tenant       *snmpgo.Oid
+	Application  *snmpgo.Oid
 }

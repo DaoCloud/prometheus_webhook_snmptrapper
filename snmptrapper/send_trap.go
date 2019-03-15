@@ -40,6 +40,17 @@ func sendTrap(alert types.Alert) {
 	// Insert the AlertManager variables:
 	varBinds = append(varBinds, snmpgo.NewVarBind(trapOIDs.Alert, snmpgo.NewOctetString([]byte(alert.Labels["alertname"]))))
 	varBinds = append(varBinds, snmpgo.NewVarBind(trapOIDs.Instance, snmpgo.NewOctetString([]byte(alert.Labels["instance"]))))
+	if ns, ok := alert.Labels["namespace"]; ok {
+		varBinds = append(varBinds, snmpgo.NewVarBind(trapOIDs.Tenant, snmpgo.NewOctetString([]byte(ns))))
+	} else {
+		varBinds = append(varBinds, snmpgo.NewVarBind(trapOIDs.Tenant, snmpgo.NewOctetString([]byte(""))))
+	}
+
+	if app, ok := alert.Labels["dce_app"]; ok {
+		varBinds = append(varBinds, snmpgo.NewVarBind(trapOIDs.Application, snmpgo.NewOctetString([]byte(app))))
+	} else {
+		varBinds = append(varBinds, snmpgo.NewVarBind(trapOIDs.Application, snmpgo.NewOctetString([]byte(""))))
+	}
 	varBinds = append(varBinds, snmpgo.NewVarBind(trapOIDs.Severity, snmpgo.NewOctetString([]byte(alert.Labels["severity"]))))
 	varBinds = append(varBinds, snmpgo.NewVarBind(trapOIDs.Description, snmpgo.NewOctetString([]byte(alert.Annotations["description"]))))
 

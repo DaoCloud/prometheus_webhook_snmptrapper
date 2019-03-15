@@ -25,11 +25,13 @@ func init() {
 	// Configure which OIDs to use for the SNMP Traps:
 	trapOIDs.FiringTrap, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.0.1")
 	trapOIDs.RecoveryTrap, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.0.2")
-	trapOIDs.Alert, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.1")
-	trapOIDs.Instance, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.2")
-	trapOIDs.Severity, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.3")
-	trapOIDs.Description, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.4")
-	trapOIDs.TimeStamp, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.5")
+	trapOIDs.TimeStamp, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.1")
+	trapOIDs.Alert, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.2")
+	trapOIDs.Instance, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.3")
+	trapOIDs.Tenant, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.4")
+	trapOIDs.Application, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.5")
+	trapOIDs.Severity, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.6")
+	trapOIDs.Description, _ = snmpgo.NewOid("1.3.6.1.3.1977.1.1.7")
 }
 
 func Run(myConfigFromMain config.Config, alertsChannel chan types.Alert, waitGroup *sync.WaitGroup) {

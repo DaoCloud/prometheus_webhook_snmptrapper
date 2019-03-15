@@ -27,13 +27,21 @@ prometheusTrapperNotificationObjects  OBJECT IDENTIFIER ::= { prometheusTrapperN
 --  Notifications
 --
 
+prometheusTrapperNotificationTimestamp OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION
+        "The time the notification-event occurred."
+::= { prometheusTrapperNotificationObjects 1 }
+
 prometheusTrapperNotificationAlert OBJECT-TYPE
     SYNTAX      DisplayString
     MAX-ACCESS  accessible-for-notify
     STATUS      current
     DESCRIPTION
         "The name of the alert."
-::= { prometheusTrapperNotificationObjects 1 }
+::= { prometheusTrapperNotificationObjects 2 }
 
 prometheusTrapperNotificationInstance OBJECT-TYPE
     SYNTAX      DisplayString
@@ -41,7 +49,23 @@ prometheusTrapperNotificationInstance OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "Unique identifier for the instance (hostname / instance-id / ip-address etc)."
-::= { prometheusTrapperNotificationObjects 2 }
+::= { prometheusTrapperNotificationObjects 3 }
+
+prometheusTrapperNotificationTenant OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION
+        "The name of tenant. Coordinated with kubernetes namespace"
+::= { prometheusTrapperNotificationObjects 4 }
+
+prometheusTrapperNotificationApplication OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION
+        "The name of DCE application."
+::= { prometheusTrapperNotificationObjects 5 }
 
 prometheusTrapperNotificationSeverity OBJECT-TYPE
     SYNTAX      DisplayString
@@ -49,7 +73,7 @@ prometheusTrapperNotificationSeverity OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The severity of the notification."
-::= { prometheusTrapperNotificationObjects 3 }
+::= { prometheusTrapperNotificationObjects 6 }
 
 prometheusTrapperNotificationDescription OBJECT-TYPE
     SYNTAX      DisplayString
@@ -57,24 +81,18 @@ prometheusTrapperNotificationDescription OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "Description field."
-::= { prometheusTrapperNotificationObjects 4 }
+::= { prometheusTrapperNotificationObjects 7 }
 
-
-prometheusTrapperNotificationTimestamp OBJECT-TYPE
-    SYNTAX      DisplayString
-    MAX-ACCESS  accessible-for-notify
-    STATUS      current
-    DESCRIPTION
-        "The time the notification-event occurred."
-::= { prometheusTrapperNotificationObjects 5 }
 
 prometheusTrapperFiringNotification NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusTrapperNotificationTimestamp,
                     prometheusTrapperNotificationAlert,
                     prometheusTrapperNotificationInstance,
+                    prometheusTrapperNotificationTenant,
+                    prometheusTrapperNotificationApplication,
                     prometheusTrapperNotificationSeverity,
-                    prometheusTrapperNotificationDescription,
-                    prometheusTrapperNotificationTimestamp
+                    prometheusTrapperNotificationDescription
                 }
     STATUS      current
     DESCRIPTION
@@ -83,11 +101,13 @@ prometheusTrapperFiringNotification NOTIFICATION-TYPE
 
 prometheusTrapperRecoveryNotification NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusTrapperNotificationTimestamp,
                     prometheusTrapperNotificationAlert,
                     prometheusTrapperNotificationInstance,
+                    prometheusTrapperNotificationTenant,
+                    prometheusTrapperNotificationApplication,
                     prometheusTrapperNotificationSeverity,
-                    prometheusTrapperNotificationDescription,
-                    prometheusTrapperNotificationTimestamp
+                    prometheusTrapperNotificationDescription
                 }
     STATUS      current
     DESCRIPTION
